@@ -16,11 +16,11 @@
 
 .ui-main-menus .sidebar-shortcuts-content > .collapse-icon{
 	padding: 5px;
-    vertical-align: middle;
-    border: 1px solid;
-    background: #438EB9;
-    color: #fff;
-    font-weight: bold
+	vertical-align: middle;
+	border: 1px solid;
+	background: #438EB9;
+	color: #fff;
+	font-weight: bold
 }
 .ui-main-menus .sidebar-shortcuts-content > .collapse-icon.right{
 	position: absolute;
@@ -29,15 +29,90 @@
 .ui-main-menus .sidebar-shortcuts-large .btn,
 .ui-main-menus .sidebar-shortcuts-medium .btn,
 .ui-main-menus .sidebar-shortcuts-mini .btn{
-    margin-left:1px;
-    margin-top:1px;
+	margin-left:1px;
+	margin-top:1px;
 	font-weight: bold;
 }
 .ui-main-menus .sidebar-shortcuts-medium{
 	max-width: 200px;
 }
 .ui-main-menus .sidebar-shortcuts-mini .btn{
-	width: 25px;
-	height: 25px;
+	width: 18px;
+	height: 18px;
 }
 
+.ui-sidebar.sidebar {
+	width: 220px;
+}
+
+.ui-sidebar.sidebar.menu-min,.sidebar.menu-min.compact,.sidebar.menu-min.navbar-collapse {
+	width: 43px
+}
+
+.uni-sidebar-menu.sidebar{
+	width: 100%;
+}
+
+.uni-sidebar-menu.sidebar .sidebar-shortcuts-large>.btn {
+	width: auto;
+
+}
+
+.uni-sidebar-menu.sidebar .sidebar-shortcuts {
+	text-align: left;
+}	
+
+.uni-sidebar-menu.sidebar.menu-min .sidebar-shortcuts.hover-show .sidebar-shortcuts-large,.sidebar.menu-min .sidebar-shortcuts:hover .sidebar-shortcuts-large{
+	width: 100%;
+	display: block!important;
+}
+
+.uni-sidebar-menu.sidebar.menu-min .sidebar-shortcuts-medium {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 42px;
+	width: 182px;
+	padding: 0 2px 3px;
+	border: 1px solid;
+	border-top-width: 0
+}
+.uni-sidebar-menu.sidebar.menu-min .sidebar-shortcuts-mini{
+	border-style: solid;
+	border-width: 1px;
+	border-color: #E5E5E5;
+	padding: 0px;
+	width: 43px;
+	text-align: center
+}
+
+.uni-sidebar-menu{
+	float: initial;
+}
+.uni-sidebar-menu.sidebar.menu-medium{
+	width:220px;
+}
+.uni-sidebar-menu.sidebar.menu-min,
+.uni-sidebar-menu.sidebar.menu-medium.menu-min{
+	width: 43px;
+}
+.uni-sidebar-menu.sidebar.menu-min:hover{
+	width: 100%;
+}
+
+.sidebar+.main-content {
+	margin-left: 220px;
+}
+
+.modules-content{
+	position: relative;
+}
+
+.main-content.top-content{
+	position: absolute;
+	top:0;
+}
+
+.sidebar .ui-main-menus  .sidebar-shortcuts-large{
+	line-height: initial;
+}
