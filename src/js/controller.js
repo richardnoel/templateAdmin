@@ -1,4 +1,4 @@
-app.controller('ctrl$template', function main$index($scope, $http, $log, $runtime, $window, $store) {
+  app.controller('ctrl$template', function main$index($scope, $http, $log, $runtime, $window, $store) {
 $scope.menu = 
 [
   {
