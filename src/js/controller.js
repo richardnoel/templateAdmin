@@ -647,8 +647,93 @@ $scope.menu =
             "label": "uni-input",
             "action": null,
             "state": null,
+            "type": "GROUP",
+            "children": [
+          {
+            "viewId": "uni-input",
+            "moduleId": "static-showcase",
+            "icon": null,
+            "label": "uni-input",
+            "action": null,
+            "state": null,
             "type": "LINK",
             "children": [],
+            "content": {
+              "id": "static-showcase#uni-input",
+              "title": "Page: /view/base/input.html",
+              "version": "1.0.0",
+              "view": "/static/showcase/view/base/input.html",
+              "ctrl": [
+                "/static/showcase/ctrl/forms.js"
+              ],
+              "icon": null,
+              "mode": "CONTENT"
+            }
+          },
+          {
+            "viewId": "uni-select",
+            "moduleId": "static-showcase",
+            "icon": null,
+            "label": "uni-select",
+            "action": null,
+            "state": null,
+            "type": "LINK",
+            "children": [],
+            "content": {
+              "id": "static-showcase#uni-select",
+              "title": "Page: /view/base/select.html",
+              "version": "1.0.0",
+              "view": "/static/showcase/view/base/select.html",
+              "ctrl": [
+                "/static/showcase/ctrl/forms.js"
+              ],
+              "icon": null,
+              "mode": "CONTENT"
+            }
+          },
+          {
+            "viewId": "uni-filter",
+            "moduleId": "static-showcase",
+            "icon": null,
+            "label": "uni-filter",
+            "action": null,
+            "state": null,
+            "type": "LINK",
+            "children": [],
+            "content": {
+              "id": "static-showcase#uni-filter",
+              "title": "Page: /view/base/filter.html",
+              "version": "1.0.0",
+              "view": "/static/showcase/view/base/filter.html",
+              "ctrl": [
+                "/static/showcase/ctrl/forms.js"
+              ],
+              "icon": null,
+              "mode": "CONTENT"
+            }
+          },
+          {
+            "viewId": "uni-editor",
+            "moduleId": "static-showcase",
+            "icon": null,
+            "label": "uni-editor",
+            "action": null,
+            "state": null,
+            "type": "LINK",
+            "children": [],
+            "content": {
+              "id": "static-showcase#uni-editor",
+              "title": "Page: /view/base/editor.html",
+              "version": "1.0.0",
+              "view": "/static/showcase/view/base/editor.html",
+              "ctrl": [
+                "/static/showcase/ctrl/forms.js"
+              ],
+              "icon": null,
+              "mode": "CONTENT"
+            }
+          }
+        ],
             "content": {
               "id": "static-showcase#uni-input",
               "title": "Page: /view/base/input.html",

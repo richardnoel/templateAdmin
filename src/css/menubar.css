@@ -10,11 +10,11 @@
 
 .ui-main-menus .sidebar-shortcuts-large,
 .ui-main-menus .sidebar-shortcuts-medium,
-.ui-main-menus .sidebar-shortcuts-content > .collapse-icon{
+.ui-main-menus .sidebar-shortcuts-content .collapse-icon{
 	display: inline-block;
 }
 
-.ui-main-menus .sidebar-shortcuts-content > .collapse-icon{
+.ui-main-menus .sidebar-shortcuts-content .collapse-icon{
 	padding: 5px;
 	vertical-align: middle;
 	border: 1px solid;
@@ -32,9 +32,10 @@
 	margin-left:1px;
 	margin-top:1px;
 	font-weight: bold;
+	padding:0 4px;
 }
 .ui-main-menus .sidebar-shortcuts-medium{
-	max-width: 200px;
+	max-width: 220px;
 }
 .ui-main-menus .sidebar-shortcuts-mini .btn{
 	width: 18px;
@@ -60,11 +61,17 @@
 
 .uni-sidebar-menu.sidebar .sidebar-shortcuts {
 	text-align: left;
+	min-height: 35px;
+	background: #438EB9;
+	border-width: 1px 0px 2px 0px;
+	border-style: solid;
+	border-color: #8ac4e4;
 }	
 
 .uni-sidebar-menu.sidebar.menu-min .sidebar-shortcuts.hover-show .sidebar-shortcuts-large,.sidebar.menu-min .sidebar-shortcuts:hover .sidebar-shortcuts-large{
-	width: 100%;
+	width: 97%;
 	display: block!important;
+	background: #438EB9;
 }
 
 .uni-sidebar-menu.sidebar.menu-min .sidebar-shortcuts-medium {
@@ -115,4 +122,21 @@
 
 .sidebar .ui-main-menus  .sidebar-shortcuts-large{
 	line-height: initial;
+}
+/*.sidebar-shortcuts-large{
+	margin-left: 0px;
+	width: 98%;
+}
+.uni-sidebar-menu.sidebar .sidebar-shortcuts-large>li.btn{
+	display: table-cell;
+	width: 1%;
+}*/
+
+@media only screen and (max-width: 479px) {
+	.navbar:not(.navbar-collapse) .navbar-header.pull-right{
+		float: right!important;
+	}
+	.navbar:not(.navbar-collapse) .navbar-header.pull-left{
+		float: left!important;
+	}
 }
