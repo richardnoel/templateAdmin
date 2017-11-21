@@ -11,14 +11,14 @@ app.directive('uiNavbar', ['$rootScope', '$compile', function ($rootScope, $comp
 											"<div class='ui-main-menus sidebar-shortcuts' id='sidebar-shortcuts'>" +
 											"<div class='sidebar-shortcuts-content'>" +
 											"<div class='sidebar-shortcuts-large' id='sidebar-shortcuts-large' ng-show='showMainMenu'>" +
-											"<button ng-click='clickMenu(item)' class='btn btn-success' ng-repeat='item in " + attrs.menu + "'>" +
+											"<button ng-click='clickMenu(item)' class='btn btn-success' ng-repeat='item in " + attrs.menu + "' ng-class='{active: (item === selectedChild)}'>" +
 											"<i class='ace-icon fa fa-cogs'></i>" +
 											"<span>{{item.label|| 'Modulo ' ++ item.id}}</span>" +
 											"</button>" +
 											"<i ng-show='!collapseSidebar' id='sidebar-toggle-icon' class='collapse-icon fa fa-angle-double-left' ng-click='showLargeMenu()' ng-class='showMainMenu?\"fa-angle-double-left left\":\"fa-angle-double-right right\"'></i>" +
 											"</div>" +
 											"<div class='sidebar-shortcuts-medium' id='sidebar-shortcuts-mini' ng-show='!showMainMenu'>" +
-											"<button ng-click='clickMenu(item)' class='btn btn-success' ng-repeat='item in " + attrs.menu + "'>" +
+											"<button ng-click='clickMenu(item)' class='btn btn-success' ng-repeat='item in " + attrs.menu + "' ng-class='{active: (item === selectedChild)}'>" +
 											"<i class='ace-icon fa fa-cogs'></i>" +
 											"</button>" +
 											"<i ng-show='!collapseSidebar' id='sidebar-toggle-icon' class='collapse-icon fa fa-angle-double-left' ng-click='showLargeMenu()' ng-class='showMainMenu?\"fa-angle-double-left left\":\"fa-angle-double-right right\"'></i>" +
@@ -43,12 +43,13 @@ app.directive('uiNavbar', ['$rootScope', '$compile', function ($rootScope, $comp
 				return templateNavbar;
 			},
 			link: function (scope, element, attrs) {
-				scope.showMainMenu = true;
+				scope.showMainMenu = false;
 				scope.showLargeMenu = function () {
 					scope.showMainMenu = !scope.showMainMenu;
 				};
 				scope.clickMenu = function (item) {
 					scope.selectedChild = item;
+
 					console.log(item)
 				};
 				$compile(element)(scope);
@@ -76,7 +77,7 @@ app.directive('uiNavbarModules', ['$rootScope', '$compile', function ($rootScope
 											"<a ng-if='!" + attrs.subMenu + "' ng-click='showMenu(item, " + attrs.menu + ".children)'>" +
 											"<i ng-if='!" + attrs.subMenu + "' class='menu-icon fa fa-list-alt'></i>" +
 											"<i ng-if='" + attrs.subMenu + "' class='menu-icon fa fa-caret-right'></i>" +
-											"<span class='menu-text'> {{item.label}}--{{item.active}}</span>" +
+											"<span class='menu-text'> {{item.label}}</span>" +
 											"<b ng-if='item.type === \"GROUP\"' class='arrow fa fa-angle-down'></b>" +
 											"</a>" +
 											"<b class='arrow'></b>" +
