@@ -17,7 +17,8 @@ var files = {
 	js:[
 		"src/js/spa.js",
 		"src/js/controller.js",
-		"src/js/directives.js"
+		"src/js/directives.js",
+		"src/js/utils.js"
 	],
 	html:[
 		"src/index.html"

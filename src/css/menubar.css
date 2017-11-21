@@ -75,7 +75,7 @@
 	border-style: solid;
 	border-color: #8ac4e4;
 }	
-
+.uni-sidebar-menu.sidebar.menu-min .sidebar-shortcuts.hover-show .sidebar-shortcuts-large,.sidebar.menu-min .sidebar-shortcuts:hover .sidebar-shortcuts-medium,
 .uni-sidebar-menu.sidebar.menu-min .sidebar-shortcuts.hover-show .sidebar-shortcuts-large,.sidebar.menu-min .sidebar-shortcuts:hover .sidebar-shortcuts-large{
 	width: auto;
 	display: block!important;

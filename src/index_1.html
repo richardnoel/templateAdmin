@@ -1,0 +1,17 @@
+
+<div class='sidebar-shortcuts-content'>
+	<div  ng-class='{"sidebar-shortcuts-medium": !showMainMenu, "sidebar-shortcuts-large": showMainMenu}'>
+		<button ng-click='clickMenu(item)' class='btn btn-success' ng-repeat='item in menu' ng-class='{active: (item === selectedChild)}'>
+			<i class='ace-icon fa fa-cogs'>
+			</i>
+			<span ng-if='showMainMenu'>{{item.label|| 'Modulo ' ++ item.id}}
+			</span>
+		</button>
+		<i ng-show='!collapseSidebar' class='collapse-icon fa' ng-click='showLargeMenu()' ng-class='showMainMenu ? "fa-angle-double-left left" : "fa-angle-double-right right"'>
+		</i>
+		<div class='sidebar-shortcuts-mini'>
+			<span ng-if='$index < 4' class='btn btn-success'  ng-repeat='item in menu' clickMenu(item)'>
+		</span>
+	</div>
+</div>
+</div>

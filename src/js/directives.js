@@ -1,34 +1,45 @@
 app.directive('uiNavbar', ['$rootScope', '$compile', function ($rootScope, $compile) {
-		var createTemplate = function (element, attrs) {
-			var html = '';
-			var mainMenus = createMainMenus(attrs);
-			html += mainMenus;
-			return html;
+		var createSideBarMenus = function (attrs) {
+			var sidebarMenus = {
+				template: "<div class='sidebar-shortcuts-content'>" +
+												"<div  ng-class='{ngClassContent}'>" +
+												"<button ng-click='{clickBtn}' class='btn btn-success' ng-repeat='item in {menu}' ng-class='{ngClassBtn}'>" +
+												"<i class='ace-icon fa fa-cogs'></i><span ng-if='showMainMenu'>{{item.label}}</span></button>" +
+												"<i ng-show='!collapseSidebar' class='collapse-icon fa' ng-click='{clickIcon}' ng-class='{ngClassIcon}'></i>" +
+												"</div>" +
+												"<div class='sidebar-shortcuts-mini'>" +
+												"<span ng-if='$index < 4' class='btn btn-success'  ng-repeat='item in {menu}' ng-click='{clickBtn}'></span>" +
+												"</div>" +
+												"</div>",
+				replaces: {
+					clickBtn: 'clickMenu(item)',
+					clickIcon: 'showLargeMenu()',
+					ngClassBtn: '{active: (item === selectedChild)}',
+					ngClassContent: '{\"sidebar-shortcuts-medium\": !showMainMenu, \"sidebar-shortcuts-large\": showMainMenu}',
+					ngClassIcon: 'showMainMenu?\"fa-angle-double-left left\":\"fa-angle-double-right right\"',
+					menu: attrs.menu
+				}
+			};
+			return replacesHTML(sidebarMenus.template, sidebarMenus.replaces);
 		};
-		var createMainMenus = function (attrs) {
-			return 	"<div class='uni-sidebar-menu sidebar responsive ace-save-state' ng-class='{\"menu-min\": collapseSidebar,  \"menu-medium\": !showMainMenu, display:hideSidebar}'> " +
-											"<div class='main-container ace-save-state' id='main-container'>" +
-											"<div class='ui-main-menus sidebar-shortcuts' id='sidebar-shortcuts'>" +
-											"<div class='sidebar-shortcuts-content'>" +
-											"<div class='sidebar-shortcuts-large' id='sidebar-shortcuts-large' ng-show='showMainMenu'>" +
-											"<button ng-click='clickMenu(item)' class='btn btn-success' ng-repeat='item in " + attrs.menu + "' ng-class='{active: (item === selectedChild)}'>" +
-											"<i class='ace-icon fa fa-cogs'></i>" +
-											"<span>{{item.label|| 'Modulo ' ++ item.id}}</span>" +
-											"</button>" +
-											"<i ng-show='!collapseSidebar' id='sidebar-toggle-icon' class='collapse-icon fa fa-angle-double-left' ng-click='showLargeMenu()' ng-class='showMainMenu?\"fa-angle-double-left left\":\"fa-angle-double-right right\"'></i>" +
-											"</div>" +
-											"<div class='sidebar-shortcuts-medium' id='sidebar-shortcuts-mini' ng-show='!showMainMenu'>" +
-											"<button ng-click='clickMenu(item)' class='btn btn-success' ng-repeat='item in " + attrs.menu + "' ng-class='{active: (item === selectedChild)}'>" +
-											"<i class='ace-icon fa fa-cogs'></i>" +
-											"</button>" +
-											"<i ng-show='!collapseSidebar' id='sidebar-toggle-icon' class='collapse-icon fa fa-angle-double-left' ng-click='showLargeMenu()' ng-class='showMainMenu?\"fa-angle-double-left left\":\"fa-angle-double-right right\"'></i>" +
-											"</div>" +
-											"</div>" +
-											"<div class='sidebar-shortcuts-mini' id='sidebar-shortcuts-mini'>" +
-											"<span ng-if='$index < 4' class='btn btn-success'  ng-repeat='item in " + attrs.menu + "' ng-click='clickMenu(item)'></span>" +
-											"</div>" +
-											"</div>" +
-											"</div></div>";
+
+		var createTemplate = function (attrs) {
+			var mainContainerMenus = {
+				template: "<div class='main-container ace-save-state'>" +
+												"<div class='ui-main-menus sidebar-shortcuts'>{sidebarMenus}</div>" +
+												"</div>",
+				replaces: {
+					sidebarMenus: createSideBarMenus(attrs) || ''
+				}
+			};
+			var mainTemplate = {
+				template: "<div class='uni-sidebar-menu sidebar responsive ace-save-state' ng-class='{ngClass}'>{sidebarContent}</div>",
+				replaces: {
+					ngClass: '{\"menu-min\": collapseSidebar, \"menu-medium\": !showMainMenu, display:hideSidebar}',
+					sidebarContent: replacesHTML(mainContainerMenus.template, mainContainerMenus.replaces)
+				}
+			};
+			return replacesHTML(mainTemplate.template, mainTemplate.replaces);
 		};
 		return {
 			restrict: 'A',
@@ -39,7 +50,7 @@ app.directive('uiNavbar', ['$rootScope', '$compile', function ($rootScope, $comp
 			template: function (element, attrs) {
 				delete attrs.uiNavbar;
 				element.removeAttr('ui-navbar');
-				var templateNavbar = createTemplate(element, attrs);
+				var templateNavbar = createTemplate(attrs);
 				return templateNavbar;
 			},
 			link: function (scope, element, attrs) {
@@ -49,14 +60,52 @@ app.directive('uiNavbar', ['$rootScope', '$compile', function ($rootScope, $comp
 				};
 				scope.clickMenu = function (item) {
 					scope.selectedChild = item;
-
-					console.log(item)
 				};
 				$compile(element)(scope);
 			}
 		};
 	}]);
 
+app.directive('uiSidebar', ['$rootScope', '$compile', function ($rootScope, $compile) {
+		var createTemplate = function (attrs) {
+			var collapseTemplate = "<div ng-show='{menu}' ng-click='collapseClick()' class='sidebar-toggle sidebar-collapse' id='sidebar-collapse'>" +
+											"<i id='sidebar-toggle-icon' class='ace-save-state ace-icon fa' ng-class='{ngClassIconCollapse}'></i>" +
+											"</div>";
+			var templateOptions = "<ul ui-navbar-modules menu='{menu}' ng-init='parent = selectedChild'></ul>";
+			var mainTemplate = {
+				template: "<div class='ui-sidebar sidebar responsive ace-save-state' ng-class='{ngClassSidebarCollapse}'>" +
+												"{collapseTemplate}{templateOptions}{collapseTemplate}</div>",
+				replaces: {
+					collapseTemplate: collapseTemplate,
+					templateOptions: templateOptions,
+					menu: attrs.menu,
+					ngClassIconCollapse: 'collapseSidebar? \"fa-angle-double-right\": \"fa-angle-double-left\"',
+					ngClassSidebarCollapse: '{\"menu-min\":collapseSidebar, display:hideSidebar}'
+				}
+			};
+			return replacesHTML(mainTemplate.template, mainTemplate.replaces);
+		};
+		return {
+			restrict: 'A',
+			replace: true,
+			scope: false,
+			priority: 10,
+			terminal: true,
+			template: function (element, attrs) {
+				delete attrs.uiSidebar;
+				element.removeAttr('ui-sidebar');
+				var templateNavbar = createTemplate(attrs);
+				return templateNavbar;
+			},
+			link: function (scope, element, attrs) {
+				scope.collapseSidebar = false;
+				scope.collapseClick = function () {
+					scope.collapseSidebar = !scope.collapseSidebar;
+				};
+				$compile(element)(scope);
+			}
+		};
+	}]);
 
 app.directive('uiNavbarModules', ['$rootScope', '$compile', function ($rootScope, $compile) {
 		var createTemplate = function (element, attrs) {
@@ -65,26 +114,37 @@ app.directive('uiNavbarModules', ['$rootScope', '$compile', function ($rootScope
 			html += mainMenus;
 			return html;
 		};
+
+		var createTemplateItems = function (attrs) {
+			var listItems = {
+				template: "<li ng-repeat='item in {menu}.children' ng-class='{active:item.active, open: (item.open && item.type==\"GROUP\")}'>" +
+												"<a ng-click='{ngClickShow}'>" +
+												"<i ng-if='!{subMenu}' class='menu-icon fa fa-list-alt'></i>" +
+												"<i ng-if='{subMenu}' class='menu-icon fa fa-caret-right'></i>" +
+												"<span class='menu-text'> {{item.label}}</span>" +
+												"<b ng-if='item.type === \"GROUP\"' class='arrow fa fa-angle-down'></b>" +
+												"</a>" +
+												"<b class='arrow'></b>" +
+												"<ul ng-if='item.type===\"GROUP\"' ui-navbar-modules menu='item' sub-menu='true' ng-init='parent = $parent.$parent.item'></ul>" +
+												"</li>",
+				replaces: {
+					parent: attrs.menu,
+					menu: attrs.menu,
+					subMenu: attrs.subMenu,
+					ngClickShow: 'clickItem(item,' + attrs.menu + ', parent)'
+				}
+			};
+			return replacesHTML(listItems.template, listItems.replaces);
+		};
 		var createMainMenus = function (attrs) {
-			var template = "<ul style='top: 0px;' ng-class='" + attrs.subMenu + "?\"submenu nav-show\":\"nav nav-list\"'>{listItems}</ul>";
-			var listItems = "<li ng-repeat='item in " + attrs.menu + ".children' ng-class='{active:item.active, open: (item.open && item.type==\"GROUP\")}'>" +
-											"<a ng-if='" + attrs.subMenu + "' ng-click='clickItem(item, " + attrs.rootMenu + ")'>" +
-											"<i ng-if='!" + attrs.subMenu + "' class='menu-icon fa fa-list-alt'></i>" +
-											"<i ng-if='" + attrs.subMenu + "' class='menu-icon fa fa-caret-right'></i>" +
-											"<span class='menu-text'> {{item.label}}</span>" +
-											"<b ng-if='item.type === \"GROUP\"' class='arrow fa fa-angle-down'></b>" +
-											"</a>" +
-											"<a ng-if='!" + attrs.subMenu + "' ng-click='showMenu(item, " + attrs.menu + ".children)'>" +
-											"<i ng-if='!" + attrs.subMenu + "' class='menu-icon fa fa-list-alt'></i>" +
-											"<i ng-if='" + attrs.subMenu + "' class='menu-icon fa fa-caret-right'></i>" +
-											"<span class='menu-text'> {{item.label}}</span>" +
-											"<b ng-if='item.type === \"GROUP\"' class='arrow fa fa-angle-down'></b>" +
-											"</a>" +
-											"<b class='arrow'></b>" +
-											"<ul ng-if='item.type===\"GROUP\"' ui-navbar-modules   menu='item' root-menu='" + attrs.menu + "' sub-menu='true'></ul>" +
-											"</li>";
-			template = template.replace(/{listItems}/g, listItems);
-			return template;
+			var mainTemplate = {
+				template: "<ul style='top: 0px;' ng-class='{ngClassSubMenu}'>{listItems}</ul>",
+				replaces: {
+					listItems: createTemplateItems(attrs),
+					ngClassSubMenu: attrs.subMenu + '?\"submenu nav-show\":\"nav nav-list\"'
+				}
+			};
+			return replacesHTML(mainTemplate.template, mainTemplate.replaces);
 		};
 		var closeLinkItems = function (menu, item, parent) {
 			var items = menu.children;
@@ -120,72 +180,25 @@ app.directive('uiNavbarModules', ['$rootScope', '$compile', function ($rootScope
 				return templateNavbar;
 			},
 			link: function (scope, element, attrs) {
-				scope.clickItem = function (item, rootMenu) {
-					scope.selectedChild.root = true;
-					var parent = closeLinkItems(scope.selectedChild, item, null);
-					if (parent) {
-						parent.active = true;
-					}
+				scope.clickItem = function (item, menu, parent) {
 					if (item.type === "GROUP") {
-						if (item.open) {
-							item.open = false;
-						} else {
-							item.open = true;
+						for (var i = 0; i < parent.children.length; i += 1) {
+							if (parent.children[i] === item) {
+								item.open = !item.open;
+							} else {
+								parent.children[i].open = false;
+							}
 						}
-					}
-					if (item.type === "LINK") {
+					} else {
+						scope.selectedChild.root = true;
+						var root = closeLinkItems(scope.selectedChild, item, null);
+						if (root) {
+							root.active = true;
+						}
 						item.active = true;
 					}
 				};
-				scope.showMenu = function (item, options) {
-					for (var i = 0; i < options.length; i += 1) {
-						if (options[i] === item) {
-							item.open = !item.open;
-							//item.active = true;
-						} else {
-							options[i].open = false;
-							//options[i].active = false;
-						}
-					}
-				};
 				scope.activeItem = null;
-				$compile(element)(scope);
-			}
-		};
-	}]);
-
-
-app.directive('uiSidebar', ['$rootScope', '$compile', function ($rootScope, $compile) {
-		var createTemplate = function (element, attrs) {
-			var html = "<div id='sidebar' class='ui-sidebar sidebar responsive ace-save-state' " +
-											"data-sidebar='true' data-sidebar-scroll='true' data-sidebar-hover='true' " +
-											" ng-class='{\"menu-min\":collapseSidebar, display:hideSidebar}'>{collapseOption}{templateOptions}{collapseOption}</div>";
-			var templateOptions = "<ul ui-navbar-modules menu='" + attrs.menu + "'></ul>";
-			var collapseOption = "<div ng-show='" + attrs.menu + "' div ng-click='collapseClick()' class='sidebar-toggle sidebar-collapse' id='sidebar-collapse'>" +
-											"<i id='sidebar-toggle-icon' class='ace-save-state ace-icon fa fa-angle-double-left' data-icon1='ace-icon fa' " +
-											"ng-class='collapseSidebar? \"fa-angle-double-right\": \"fa-angle-double-left\"' data-icon2='ace-icon fa fa-angle-double-right'></i>" +
-											"</div>";
-			html = html.replace(/{templateOptions}/g, templateOptions);
-			html = html.replace(/{collapseOption}/g, collapseOption);
-			return html;
-		};
-		return {
-			restrict: 'A',
-			replace: true,
-			scope: false,
-			priority: 10,
-			terminal: true,
-			template: function (element, attrs) {
-				delete attrs.uiSidebar;
-				element.removeAttr('ui-sidebar');
-				var templateNavbar = createTemplate(element, attrs);
-				return templateNavbar;
-			},
-			link: function (scope, element, attrs) {
-				scope.collapseSidebar = false;
-				scope.collapseClick = function () {
-					scope.collapseSidebar = !scope.collapseSidebar;
-				};
 				$compile(element)(scope);
 			}
 		};
